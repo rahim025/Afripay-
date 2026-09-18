@@ -245,8 +245,8 @@
     <h3>Envoyer de l'argent</h3>
     <form id="send-form">
       <div class="field">
-        <label for="send-email">Email du destinataire</label>
-        <input type="email" id="send-email" required>
+        <label for="send-telephone">Numéro du destinataire</label>
+        <input type="tel" id="send-telephone" placeholder="+229 00 00 00 00" required>
       </div>
       <div class="field">
         <label for="send-montant">Montant à envoyer</label>
@@ -410,7 +410,7 @@
     const submitBtn = document.getElementById('send-submit');
     feedback.className = 'feedback';
 
-    const email = document.getElementById('send-email').value.trim();
+    const telephone = document.getElementById('send-telephone').value.trim();
     const montant = Number(document.getElementById('send-montant').value);
     const deviseCible = document.getElementById('send-devise-cible').value;
 
@@ -418,7 +418,7 @@
     submitBtn.textContent = 'Envoi…';
 
     try {
-      const rechercheRes = await fetch(API_BASE + '/api/users/rechercher?email=' + encodeURIComponent(email), { headers: authHeaders() });
+      const rechercheRes = await fetch(API_BASE + '/api/users/rechercher?telephone=' + encodeURIComponent(telephone), { headers: authHeaders() });
       const rechercheData = await rechercheRes.json();
       if(!rechercheRes.ok) throw new Error(rechercheData.error);
 

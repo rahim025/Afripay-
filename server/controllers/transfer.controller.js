@@ -1,16 +1,21 @@
 const { getSupabase } = require('../config/supabase');
 
-// Taux fictifs — à remplacer par une vraie API de taux de change
-const TAUX_FICTIFS = {
-  XOF_GHS: 0.021,
-  XOF_NGN: 2.45,
-  XOF_KES: 0.28,
-  XOF_XOF: 1,
+// Taux fictifs (valeur approximative d'1 unité de chaque devise, en USD)
+// — à remplacer par une vraie API de taux de change en production.
+const VALEUR_USD = {
+  XOF: 1 / 600, XAF: 1 / 600,
+  NGN: 1 / 1500, GHS: 1 / 15, KES: 1 / 130, UGX: 1 / 3700, TZS: 1 / 2500,
+  RWF: 1 / 1300, ETB: 1 / 120, CDF: 1 / 2800, ZAR: 1 / 18, ZMW: 1 / 26,
+  MWK: 1 / 1700, BWP: 1 / 13.5, NAD: 1 / 18, MZN: 1 / 64, AOA: 1 / 900,
+  EGP: 1 / 49, MAD: 1 / 10, DZD: 1 / 135, TND: 1 / 3.1,
+  USD: 1, EUR: 1.08, GBP: 1.27, CAD: 0.73,
 };
 
 function getTaux(deviseSource, deviseCible) {
-  const cle = `${deviseSource}_${deviseCible}`;
-  return TAUX_FICTIFS[cle] || 1;
+  const src = VALEUR_USD[deviseSource];
+  const dst = VALEUR_USD[deviseCible];
+  if (!src || !dst) return 1; // devise inconnue : pas de conversion
+  return src / dst;
 }
 
 function formatTransaction(t) {

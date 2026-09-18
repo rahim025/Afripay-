@@ -63,22 +63,21 @@ async function moi(req, res, next) {
   }
 }
 
-// Recherche d'un destinataire par email, pour préparer un transfert
+// Recherche d'un destinataire par numéro de téléphone (ou email), pour préparer un transfert
 async function rechercher(req, res, next) {
   try {
     const supabase = getSupabase();
-    const { email } = req.query;
-    if (!email) return res.status(400).json({ error: 'Email requis' });
+    const { telephone, email } = req.query;
+    if (!telephone && !email) return res.status(400).json({ error: 'Numéro de téléphone requis' });
 
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email.toLowerCase().trim())
-      .maybeSingle();
+    let query = supabase.from('users').select('*');
+    query = telephone ? query.eq('telephone', telephone.trim()) : query.eq('email', email.toLowerCase().trim());
+
+    const { data: user, error } = await query.maybeSingle();
     if (error) throw error;
-    if (!user) return res.status(404).json({ error: 'Aucun utilisateur avec cet email' });
+    if (!user) return res.status(404).json({ error: 'Aucun utilisateur avec ce numéro' });
 
-    res.json({ user: { id: user.id, nom: user.nom, pays: user.pays, devise: user.devise } });
+    res.json({ user: { id: user.id, nom: user.nom, pays: user.pays, devise: user.devise, telephone: user.telephone } });
   } catch (err) {
     next(err);
   }

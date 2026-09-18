@@ -215,16 +215,35 @@
         </div>
         <div class="field" data-field="devise">
           <label for="devise">Devise de votre compte</label>
-          <select id="devise" name="devise" required>
-            <option value="">Sélectionner…</option>
-            <option value="XOF">Franc CFA (XOF)</option>
-            <option value="NGN">Naira (NGN)</option>
-            <option value="GHS">Cedi (GHS)</option>
-            <option value="KES">Shilling (KES)</option>
-            <option value="CDF">Franc congolais (CDF)</option>
-            <option value="ZAR">Rand (ZAR)</option>
-          </select>
-          <div class="error">Merci de choisir votre devise.</div>
+          <input type="text" id="devise" name="devise" list="devise-options" autocomplete="off" placeholder="Tapez pour rechercher : Naira, XOF, Cedi…" required>
+          <datalist id="devise-options">
+            <option value="XOF — Franc CFA (UEMOA)">
+            <option value="XAF — Franc CFA (CEMAC)">
+            <option value="NGN — Naira (Nigeria)">
+            <option value="GHS — Cedi (Ghana)">
+            <option value="KES — Shilling (Kenya)">
+            <option value="UGX — Shilling (Ouganda)">
+            <option value="TZS — Shilling (Tanzanie)">
+            <option value="RWF — Franc rwandais (Rwanda)">
+            <option value="ETB — Birr (Éthiopie)">
+            <option value="CDF — Franc congolais (RD Congo)">
+            <option value="ZAR — Rand (Afrique du Sud)">
+            <option value="ZMW — Kwacha (Zambie)">
+            <option value="MWK — Kwacha (Malawi)">
+            <option value="BWP — Pula (Botswana)">
+            <option value="NAD — Dollar namibien (Namibie)">
+            <option value="MZN — Metical (Mozambique)">
+            <option value="AOA — Kwanza (Angola)">
+            <option value="EGP — Livre égyptienne (Égypte)">
+            <option value="MAD — Dirham (Maroc)">
+            <option value="DZD — Dinar algérien (Algérie)">
+            <option value="TND — Dinar tunisien (Tunisie)">
+            <option value="USD — Dollar américain">
+            <option value="EUR — Euro">
+            <option value="GBP — Livre sterling">
+            <option value="CAD — Dollar canadien">
+          </datalist>
+          <div class="error">Merci de choisir une devise valide dans la liste.</div>
         </div>
       </div>
 
@@ -274,6 +293,13 @@
   function validPin(value){
     return /^[0-9]{4}$/.test(value.trim());
   }
+  const CODES_DEVISE = ['XOF','XAF','NGN','GHS','KES','UGX','TZS','RWF','ETB','CDF','ZAR','ZMW','MWK','BWP','NAD','MZN','AOA','EGP','MAD','DZD','TND','USD','EUR','GBP','CAD'];
+  function extraireCodeDevise(value){
+    return value.trim().split(/\s/)[0].toUpperCase();
+  }
+  function validDevise(value){
+    return CODES_DEVISE.includes(extraireCodeDevise(value));
+  }
 
   function showServerError(message){
     serverError.textContent = message;
@@ -290,7 +316,7 @@
       { id:'nom', valid: v => v.trim().length > 0 },
       { id:'telephone', valid: validPhone },
       { id:'pays', valid: v => v !== '' },
-      { id:'devise', valid: v => v !== '' },
+      { id:'devise', valid: validDevise },
       { id:'email', valid: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) },
       { id:'pin', valid: validPin }
     ];
@@ -314,7 +340,7 @@
     const email = document.getElementById('email').value.trim();
     const pin = document.getElementById('pin').value.trim();
     const pays = document.getElementById('pays').value;
-    const devise = document.getElementById('devise').value;
+    const devise = extraireCodeDevise(document.getElementById('devise').value);
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Création en cours…';

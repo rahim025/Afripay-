@@ -254,12 +254,34 @@
       </div>
       <div class="field">
         <label for="send-devise-cible">Devise reçue par le destinataire</label>
-        <select id="send-devise-cible" required>
-          <option value="XOF">Franc CFA (XOF)</option>
-          <option value="NGN">Naira (NGN)</option>
-          <option value="GHS">Cedi (GHS)</option>
-          <option value="KES">Shilling (KES)</option>
-        </select>
+        <input type="text" id="send-devise-cible" list="devise-options" autocomplete="off" placeholder="Tapez pour rechercher : Naira, XOF, Cedi…" required>
+        <datalist id="devise-options">
+          <option value="XOF — Franc CFA (UEMOA)">
+          <option value="XAF — Franc CFA (CEMAC)">
+          <option value="NGN — Naira (Nigeria)">
+          <option value="GHS — Cedi (Ghana)">
+          <option value="KES — Shilling (Kenya)">
+          <option value="UGX — Shilling (Ouganda)">
+          <option value="TZS — Shilling (Tanzanie)">
+          <option value="RWF — Franc rwandais (Rwanda)">
+          <option value="ETB — Birr (Éthiopie)">
+          <option value="CDF — Franc congolais (RD Congo)">
+          <option value="ZAR — Rand (Afrique du Sud)">
+          <option value="ZMW — Kwacha (Zambie)">
+          <option value="MWK — Kwacha (Malawi)">
+          <option value="BWP — Pula (Botswana)">
+          <option value="NAD — Dollar namibien (Namibie)">
+          <option value="MZN — Metical (Mozambique)">
+          <option value="AOA — Kwanza (Angola)">
+          <option value="EGP — Livre égyptienne (Égypte)">
+          <option value="MAD — Dirham (Maroc)">
+          <option value="DZD — Dinar algérien (Algérie)">
+          <option value="TND — Dinar tunisien (Tunisie)">
+          <option value="USD — Dollar américain">
+          <option value="EUR — Euro">
+          <option value="GBP — Livre sterling">
+          <option value="CAD — Dollar canadien">
+        </datalist>
       </div>
       <div class="feedback" id="send-feedback"></div>
       <div class="actions">
@@ -412,7 +434,7 @@
 
     const telephone = document.getElementById('send-telephone').value.trim();
     const montant = Number(document.getElementById('send-montant').value);
-    const deviseCible = document.getElementById('send-devise-cible').value;
+    const deviseCible = document.getElementById('send-devise-cible').value.trim().split(/\s/)[0].toUpperCase();
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Envoi…';

@@ -11,13 +11,13 @@ function genererCode() {
 }
 
 function toPublicUser(user) {
-  return { id: user.id, nom: user.nom, email: user.email, pays: user.pays, devise: user.devise };
+  return { id: user.id, nom: user.nom, email: user.email, telephone: user.telephone, pays: user.pays, devise: user.devise };
 }
 
 async function inscription(req, res, next) {
   try {
     const supabase = getSupabase();
-    const { nom, email, motDePasse, pays, devise } = req.body;
+    const { nom, email, telephone, motDePasse, pays, devise } = req.body;
 
     if (!nom || !email || !motDePasse || !pays) {
       return res.status(400).json({ error: 'Champs manquants' });
@@ -42,6 +42,7 @@ async function inscription(req, res, next) {
       .insert({
         nom,
         email: emailNormalise,
+        telephone: telephone ? telephone.trim() : null,
         mot_de_passe: hash,
         pays,
         devise: devise || 'XOF',

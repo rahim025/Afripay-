@@ -45,6 +45,7 @@ async function moi(req, res, next) {
         id: user.id,
         nom: user.nom,
         email: user.email,
+        telephone: user.telephone,
         pays: user.pays,
         devise: user.devise,
         solde: user.solde,

@@ -209,10 +209,73 @@
   }
   @media (prefers-reduced-motion: reduce){
     .route-pulse{animation:none !important;}
+  }  /* ---------- Splash screen ---------- */
+  html.splash-lock, html.splash-lock body{ overflow:hidden; height:100%; }
+  .splash{
+    position:fixed; inset:0; z-index:9999;
+    background:var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:30px;
+    transition:opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .splash.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  .splash-logo{
+    font-family:'Fraunces', serif;
+    font-size:clamp(2.4rem, 9vw, 3.8rem);
+    color:var(--cream);
+    letter-spacing:0.01em;
+    animation: splash-pulse 1.7s ease-in-out infinite;
+  }
+  .splash-logo span{ color:var(--gold); }
+  @keyframes splash-pulse{
+    0%, 100%{ opacity:1; text-shadow:0 0 0 rgba(227,162,60,0); }
+    50%{ opacity:0.5; text-shadow:0 0 28px rgba(227,162,60,0.55); }
+  }
+  .splash-ring{
+    width:34px; height:34px;
+    border:2px solid var(--line);
+    border-top-color:var(--gold);
+    border-radius:50%;
+    animation: splash-spin 0.9s linear infinite;
+  }
+  @keyframes splash-spin{ to{ transform:rotate(360deg); } }
+  .splash-marquee{
+    width:100%; max-width:440px;
+    overflow:hidden;
+    mask-image:linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  }
+  .splash-marquee-track{
+    display:flex; gap:16px; align-items:center;
+    width:max-content;
+    white-space:nowrap;
+    animation: splash-scroll 9s linear infinite;
+    font-size:0.82rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--cream-dim);
+  }
+  .splash-marquee-track .dot{ color:var(--gold); }
+  @keyframes splash-scroll{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
   }
 </style>
 </head>
 <body>
+
+<div class="splash" id="splash">
+  <div class="splash-logo">Afri<span>Pay</span></div>
+  <div class="splash-ring"></div>
+  <div class="splash-marquee">
+    <div class="splash-marquee-track">
+      <span>Transfert</span><span class="dot">•</span>
+      <span>Sécurisé</span><span class="dot">•</span>
+      <span>24/24 7j/7</span><span class="dot">•</span>
+      <span>Transfert</span><span class="dot">•</span>
+      <span>Sécurisé</span><span class="dot">•</span>
+      <span>24/24 7j/7</span><span class="dot">•</span>
+    </div>
+  </div>
+</div>
 
 <nav>
   <div class="wrap">
@@ -363,6 +426,22 @@
     <div>Conçu par Batchabi Rahim</div>
   </div>
 </footer>
+
+<script>
+  document.documentElement.classList.add('splash-lock');
+  const SPLASH_MIN_MS = 1400;
+  const splashStart = Date.now();
+  window.addEventListener('load', function(){
+    const elapsed = Date.now() - splashStart;
+    const wait = Math.max(0, SPLASH_MIN_MS - elapsed);
+    setTimeout(function(){
+      const splash = document.getElementById('splash');
+      document.documentElement.classList.remove('splash-lock');
+      splash.classList.add('hide');
+      splash.addEventListener('transitionend', function(){ splash.remove(); }, { once:true });
+    }, wait);
+  });
+</script>
 
 </body>
 </html>

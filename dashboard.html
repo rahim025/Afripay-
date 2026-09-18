@@ -198,6 +198,7 @@
           <h3>Votre profil</h3>
           <div class="profile-row"><span class="k">Nom</span><span id="profil-nom"></span></div>
           <div class="profile-row"><span class="k">Email</span><span id="profil-email"></span></div>
+          <div class="profile-row"><span class="k">Numéro Mobile Money</span><span id="profil-telephone"></span></div>
           <div class="profile-row"><span class="k">Pays</span><span id="profil-pays"></span></div>
           <div class="profile-row"><span class="k">Devise</span><span id="profil-devise"></span></div>
           <div class="profile-row"><span class="k">Membre depuis</span><span id="profil-date"></span></div>
@@ -349,6 +350,7 @@
     document.getElementById('solde-devise').textContent = user.devise;
     document.getElementById('profil-nom').textContent = user.nom;
     document.getElementById('profil-email').textContent = user.email;
+    document.getElementById('profil-telephone').textContent = user.telephone || '—';
     document.getElementById('profil-pays').textContent = user.pays;
     document.getElementById('profil-devise').textContent = user.devise;
     document.getElementById('profil-date').textContent = formatDate(user.createdAt);

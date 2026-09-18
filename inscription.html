@@ -193,7 +193,7 @@
       <div class="field" data-field="telephone">
         <label for="telephone">Numéro de téléphone</label>
         <input type="tel" id="telephone" name="telephone" placeholder="+229 00 00 00 00" required>
-        <div class="hint">Avec l'indicatif du pays. Il servira à vérifier votre compte par code envoyé par SMS.</div>
+        <div class="hint">Avec l'indicatif du pays. C'est ce numéro qui recevra l'argent envoyé par Mobile Money.</div>
         <div class="error">Merci d'entrer un numéro de téléphone valide, avec l'indicatif du pays.</div>
       </div>
 
@@ -310,6 +310,7 @@
 
     const prenom = document.getElementById('prenom').value.trim();
     const nomFamille = document.getElementById('nom').value.trim();
+    const telephone = document.getElementById('telephone').value.trim();
     const email = document.getElementById('email').value.trim();
     const pin = document.getElementById('pin').value.trim();
     const pays = document.getElementById('pays').value;
@@ -325,6 +326,7 @@
         body: JSON.stringify({
           nom: prenom + ' ' + nomFamille,
           email,
+          telephone,
           motDePasse: pin,
           pays,
           devise,
